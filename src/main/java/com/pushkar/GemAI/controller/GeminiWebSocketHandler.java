@@ -4,7 +4,6 @@ package com.pushkar.GemAI.controller;
 import com.pushkar.GemAI.entity.Product;
 import com.pushkar.GemAI.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -22,8 +21,8 @@ import java.util.regex.Pattern;
 public class GeminiWebSocketHandler extends TextWebSocketHandler {
 
 
-    @Value("${gemini.api.key}")
-    private String apiKey;
+
+    private String apiKey="AIzaSyBWYbfcI_qJF7mJpfxSLojsTYtQO-t98Lo";
 
 
     @Autowired
