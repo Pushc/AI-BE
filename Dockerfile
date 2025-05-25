@@ -1,28 +1,26 @@
-# 🔧 Stage 1: Build the application using Maven and JDK 1.8
-FROM maven:3.6.3-openjdk-8 AS build
+# Stage 1: Build the application using Maven and JDK 21
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
-# Set working directory
 WORKDIR /app
 
-# Cache dependencies (makes rebuilds faster)
+# Cache dependencies first
 COPY pom.xml .
 RUN mvn dependency:go-offline
 
-# Copy the full source code and build
+# Copy all project files
 COPY . .
+
+# Build the app
 RUN mvn clean package -DskipTests
 
-# 🏗️ Stage 2: Run the application on a lightweight image
-FROM openjdk:8-jdk-slim
+# Stage 2: Run the application with a slim JDK 21 image
+FROM eclipse-temurin:21-jdk-slim
 
-# Set working directory
 WORKDIR /app
-
-# Expose port
 EXPOSE 8080
 
-# Copy the built JAR from previous stage
-COPY --from=build /app/target/GemAI-0.0.1-SNAPSHOT.jar app.jar
+# Copy the built JAR
+COPY --from=build /app/target/*.jar app.jar
 
-# Run the app
+# Run the JAR
 ENTRYPOINT ["java", "-jar", "app.jar"]
